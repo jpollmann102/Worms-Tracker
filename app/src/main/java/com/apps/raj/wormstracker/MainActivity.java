@@ -30,6 +30,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
         players = (ArrayList<Player>) getFromSharedPrefs(this);
         if(players == null) players = new ArrayList<Player>();
+
+        MyApplication.setAllPlayers(players);
 
         mainTable = findViewById(R.id.mainTable);
 
@@ -94,7 +97,33 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        startActivity(new Intent(MainActivity.this, AddGameActivity.class));
+        startActivityForResult(new Intent(MainActivity.this, AddGameActivity.class), 0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if(requestCode == 0)
+        {
+            // Created a game
+            View view = findViewById(R.id.main_layout_id);
+            updateTable();
+            Snackbar snackbar = Snackbar.make(
+                    view, "Game added", Snackbar.LENGTH_SHORT);
+
+            snackbar.show();
+        }else if(requestCode == 1)
+        {
+            // Manually changed values
+            View view = findViewById(R.id.main_layout_id);
+            updateTable();
+            Snackbar snackbar = Snackbar.make(
+                    view, "Player values updated", Snackbar.LENGTH_SHORT);
+
+            snackbar.show();
+        }
+
+        chosenPlayers.clear();
     }
 
     private void showAlert(String title, String message)
@@ -139,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
 
         builder.show();
         chosenPlayers.clear();
+        MyApplication.setAllPlayers(players);
     }
 
     private void updateTable()
@@ -152,6 +182,8 @@ public class MainActivity extends AppCompatActivity {
         TableRow tr;
         CheckBox chosenPlayer;
         TextView nameAndPoints;
+
+        Collections.sort(players);
 
         for(int i = 0; i < players.size(); i++)
         {
@@ -219,9 +251,34 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.menu_refresh) {
+        if (id == R.id.menu_refresh)
+        {
             updateTable();
             return true;
+        }
+
+        if(id == R.id.menu_stats)
+        {
+            if(players.size() == 0)
+            {
+                showAlert("No Players", "Please add players in order to see stats");
+            }else
+            {
+                startActivity(new Intent(MainActivity.this, StatsActivity.class));
+            }
+        }
+
+        if(id == R.id.menu_manual_input)
+        {
+            if(chosenPlayers.size() != 1)
+            {
+                showAlert("Choose Player For Manual Input", "Please ensure exactly 1 player is selected for manual input");
+                chosenPlayers.clear();
+            }else
+            {
+                MyApplication.setChosenPlayers(chosenPlayers);
+                startActivityForResult(new Intent(MainActivity.this, ManualInputActivity.class), 1);
+            }
         }
 
         return super.onOptionsItemSelected(item);

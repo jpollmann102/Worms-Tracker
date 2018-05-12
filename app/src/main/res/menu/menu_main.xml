@@ -7,4 +7,14 @@
         android:id="@+id/menu_refresh"
         android:title="@string/action_refresh"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_stats"
+        android:title="Statistics"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_manual_input"
+        android:title="Manual Input"
+        app:showAsAction="never" />
 </menu>

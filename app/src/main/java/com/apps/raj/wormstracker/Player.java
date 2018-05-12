@@ -1,10 +1,12 @@
 package com.apps.raj.wormstracker;
 
+import android.support.annotation.NonNull;
+
 /**
  * Created by Josh on 5/7/2018.
  */
 
-public class Player
+public class Player implements Comparable<Player>
 {
 
     private String name;
@@ -118,8 +120,34 @@ public class Player
     }
 
     public String getName() { return name; }
+    public int getWins() { return wins; }
     public int getPoints() { return points; }
     public int getGamesPlayed() { return gamesPlayed; }
     public int getNumMostFriendlyKilled() { return numMostFriendlyKilled; }
     public int getNumMostEnemyKilled() { return numMostEnemyKilled; }
+    public int getFriendlyDamage() { return friendlyDamage; }
+    public int getDamageDone() { return damageDone; }
+    public int getDamageTaken() { return damageTaken; }
+    public int getPlaces(int idx) { return places[idx]; }
+    public double getPPG() { return (double)points / (double)gamesPlayed; }
+    public double getDPG() { return (double)damageDone / (double)gamesPlayed; }
+    public double getFDPG() { return (double)friendlyDamage / (double)gamesPlayed; }
+    public double getFKPG() { return (double)friendlyKilled / (double)gamesPlayed; }
+    public double getEKPG() { return (double)enemyKilled / (double)gamesPlayed; }
+    public double getDTPG() { return (double)damageTaken / (double)gamesPlayed; }
+
+    public void setName(String name) {this.name = name;}
+    public void setPoints(int pts) {this.points = pts;}
+    public void setGamesPlayed(int gp) {this.gamesPlayed = gp;}
+    public void setNumMostFriendlyKilled(int num) {this.numMostFriendlyKilled = num;}
+    public void setNumMostEnemyKilled(int num) {this.numMostEnemyKilled = num;}
+    public void setPlaces(int[] places) {this.places = places;}
+    public void setWins(int wins) {this.wins = wins;}
+
+    @Override
+    public int compareTo(@NonNull Player o)
+    {
+        return o.getPoints() - points;
+    }
+
 }

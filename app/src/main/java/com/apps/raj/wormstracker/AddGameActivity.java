@@ -108,6 +108,27 @@ public class AddGameActivity extends AppCompatActivity {
         int mostDamageTaken = mostDamageTakenSpinner.getSelectedItemPosition();
         int mostFriendlyDamage = mostFriendlyDamageSpinner.getSelectedItemPosition();
 
+        if(mostFriendlyET.getText().equals(""))
+        {
+            showAlert("Missing Information", "Please enter a value for most friendlies killed");
+            return;
+        }else if(mostEnemyET.getText().equals(""))
+        {
+            showAlert("Missing Information", "Please enter a value for most enemies killed");
+            return;
+        }else if(mostDamageET.getText().equals(""))
+        {
+            showAlert("Missing Information", "Please enter a value for most damage done");
+            return;
+        }else if(mostDamageTakenET.getText().equals(""))
+        {
+            showAlert("Missing Information", "Please enter a value for most damage taken");
+            return;
+        }else if(mostFriendlyDamageET.getText().equals(""))
+        {
+            showAlert("Missing Information", "Please enter a value for most friendly damage done");
+            return;
+        }
         int mostFriendlyNum = Integer.parseInt(mostFriendlyET.getText().toString());
         int mostEnemyNum = Integer.parseInt(mostEnemyET.getText().toString());
         int mostDamageNum = Integer.parseInt(mostDamageET.getText().toString());
